@@ -1,0 +1,32 @@
+class Screen
+
+  attr_reader :width, :height, :screen
+
+  def initialize(width, height)
+    @width = width
+    @height = height
+    @screen = []
+    clear
+  end
+
+  def clear
+    height.times { @screen << " " * width }
+  end
+
+  def add_image(x, y, image)
+    h = image.size
+    w = image[0].length
+    h.times do |k|
+      w.times do |l|
+        @screen[y + k][x + l] = image[k][l]
+      end
+    end
+  end
+
+  def print_screen(delay = 0)
+    sleep delay
+    system('clear')
+    @screen.each {|str| puts str}
+  end
+
+end
