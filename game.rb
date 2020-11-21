@@ -70,7 +70,7 @@ class Game
 
   def draw_info
     draw_player_info(@x_player, @player)
-    draw_player_info(@x_dealer, @dealer, false)
+    draw_player_info(@x_dealer, @dealer, score: false)
     @screen.add_image(15, 12, ["Game bank = #{@game_bank}  "])
     @screen.print_screen
   end
@@ -91,7 +91,7 @@ class Game
   def dealer_move
     if @dealer.score < 17 && @dealer.cards.size < 3
       get_cards(@dealer, 1)
-      draw_cards(@x_dealer, @dealer, false)
+      draw_cards(@x_dealer, @dealer, face: false)
     end
     @turn = :player
   end
@@ -121,7 +121,7 @@ class Game
 
   def open_cards
     draw_cards(@x_dealer, @dealer)
-    draw_player_info(@x_dealer, @dealer, true)
+    draw_player_info(@x_dealer, @dealer, score: true)
     find_winner
     reset
   end
@@ -156,8 +156,8 @@ class Game
     draw_info
     get_cards(@player, 2)
     get_cards(@dealer, 2)
-    draw_cards(@x_player, @player, false)
-    draw_cards(@x_dealer, @dealer, false)
+    draw_cards(@x_player, @player, face: false)
+    draw_cards(@x_dealer, @dealer, face: false)
     draw_cards(@x_player, @player)
     sleep 0.5
     draw_info
