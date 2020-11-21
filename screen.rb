@@ -10,9 +10,8 @@ class Screen
   end
 
   def clear
-   # @screen = [" "]
+    @screen.clear
     @height.times { |i| @screen[i] = " " * @width }
-    #system('clear')
   end
 
   def add_image(x, y, image)

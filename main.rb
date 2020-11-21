@@ -1,16 +1,7 @@
-require_relative 'screen'
+require_relative 'game'
 
-screen = Screen.new(17,17)
+puts "Enter your name:"
+name = gets.chomp
 
-card = [" ____ ", "|////|", "|////|", "|////|", " ---- "]
-dealer = ["Dealer"]
-
-system('clear')
-screen.add_image(5,0,dealer)
-screen.print_screen
-screen.add_image(3,1,card)
-screen.print_screen(0.5)
-screen.add_image(10,1,card)
-screen.print_screen(0.5)
-screen.add_image(17,1,card)
-screen.print_screen(0.5)
+game = Game.new(name, 100)
+game.run
