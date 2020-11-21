@@ -1,8 +1,12 @@
 require_relative 'screen'
 require_relative 'player'
 require_relative 'deck'
+require_relative 'validation'
 
 class Game
+  include Validation
+
+  validate :bank, :positive
 
   SHIRT = [" ____ ",
           "|////|",
@@ -11,16 +15,19 @@ class Game
           " ---- "]
 
   def initialize(player_name, bank)
-    @deck = Deck.new
-    @dealer = Dealer.new("Dealer", bank)
-    @player = Player.new(player_name, bank)
-    @screen = Screen.new(80, 15)
     @bank = bank
+    validate!
+    @deck = Deck.new
+    @dealer = Dealer.new("Dealer", @bank)
+    @player = Player.new(player_name, @bank)
+    @screen = Screen.new(80, 15)
     @game_bank = 0
     @x_player = 2
     @x_dealer = 30
     @turn = :player
   end
+
+# Drawing picture of card -------------------------------------------------
 
   def card_picture(card)
     pict = [" ____ "]

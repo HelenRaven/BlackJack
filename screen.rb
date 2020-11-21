@@ -1,10 +1,17 @@
+require_relative 'validation'
+
 class Screen
+  include Validation
 
   attr_reader :width, :height, :screen
+
+  validate :width, :positive
+  validate :height, :positive
 
   def initialize(width = 10, height = 10)
     @width = width
     @height = height
+    validate!
     @screen = []
     @height.times { @screen << " " * @width }
   end

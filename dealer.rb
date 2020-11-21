@@ -1,6 +1,13 @@
+require_relative 'validation'
+
 class Dealer
+  include Validation
+
   attr_accessor :bank
   attr_reader :name, :score, :cards
+
+  validate :name, :presence
+  validate :bank, :positive
 
   def initialize(name, bank)
     @name = name
