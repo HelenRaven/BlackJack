@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'screen'
 require_relative 'player'
 require_relative 'deck'
@@ -9,10 +11,10 @@ class Game
   validate :bank, :positive
 
   SHIRT = [" ____ ",
-          "|////|",
-          "|////|",
-          "|////|",
-          " ---- "]
+           "|////|",
+           "|////|",
+           "|////|",
+           " ---- "].freeze
 
   def initialize(player_name, bank)
     @bank = bank
@@ -27,24 +29,24 @@ class Game
     @turn = :player
   end
 
-# Drawing picture of card -------------------------------------------------
+  # Drawing picture of card -------------------------------------------------
 
   def card_picture(card)
     pict = [" ____ "]
-    pict.push("|"+ card[:suite]+"   |")
-    if card[:value] == 10
-      pict << "| 10 |"
-    else
-      pict << "|  #{card[:value]} |"
-    end
+    pict.push("|#{card[:suite]}   |")
+    pict << if card[:value] == 10
+              "| 10 |"
+            else
+              "|  #{card[:value]} |"
+            end
     pict << "|    |"
     pict << " ---- "
     pict
   end
 
-# Drawing info -------------------------------------------------------------
+  # Drawing info -------------------------------------------------------------
 
-  def draw_player_info(x, player, score = true)
+  def draw_player_info(x, player, score: true)
     @screen.add_image(x, 1, [player.name])
     @screen.add_image(x, 9, ["bank: #{player.bank}  "])
     if score
@@ -55,7 +57,7 @@ class Game
     @screen.print_screen
   end
 
-  def draw_cards(x, player, face = true)
+  def draw_cards(x, player, face: true)
     player.cards.each.with_index do |card, i|
       if face
         @screen.add_image(x + i * 8, 3, card_picture(card))
@@ -73,10 +75,10 @@ class Game
     @screen.print_screen
   end
 
-# Game moves ---------------------------------------------------
+  # Game moves ---------------------------------------------------
 
   def get_cards(player, number)
-    number.times {player.take_card(@deck.issue_card)}
+    number.times { player.take_card(@deck.issue_card) }
   end
 
   def make_bets(bet)
@@ -88,7 +90,7 @@ class Game
 
   def dealer_move
     if @dealer.score < 17 && @dealer.cards.size < 3
-      get_cards(@dealer,1)
+      get_cards(@dealer, 1)
       draw_cards(@x_dealer, @dealer, false)
     end
     @turn = :player
@@ -97,7 +99,7 @@ class Game
   def player_move
     puts "Enter your choice:"
     i = @player.move.size < 2 ? @player.move.size : 2
-    i.times {|k| puts "#{@player.move[k][:text]} (#{k + 1})"}
+    i.times { |k| puts "#{@player.move[k][:text]} (#{k + 1})" }
     answer = gets.to_i
     key = @player.move[answer - 1][:key]
     @player.move.delete_at(answer - 1)
@@ -115,7 +117,7 @@ class Game
     end
   end
 
-# Game result moves -----------------------------------------------
+  # Game result moves -----------------------------------------------
 
   def open_cards
     draw_cards(@x_dealer, @dealer)
@@ -148,7 +150,7 @@ class Game
     puts "Draw game!"
   end
 
-# Setting initial values --------------------------------------------------------
+  # Setting initial values --------------------------------------------------------
 
   def start
     draw_info
@@ -176,31 +178,35 @@ class Game
     @game_bank = 0
   end
 
-# Game -----------------------------------------------------------------------------
+  # Game -----------------------------------------------------------------------------
+
+  def round
+    loop do
+      case @turn
+      when :dealer
+        dealer_move
+      when :player
+        player_move
+      when :open
+        open_cards
+        break
+      end
+      if @player.cards.size == 3 && @dealer.cards.size == 3
+        open_cards
+        break
+      end
+    end
+  end
 
   def run
     loop do
-    @screen.clear
-    start
-      loop do
-        case @turn
-        when :dealer
-          dealer_move
-        when :player
-          player_move
-        when :open
-          open_cards
-          break
-        end
-        if @player.cards.size == 3 && @dealer.cards.size == 3
-          open_cards
-          break
-        end
-      end
-      if @dealer.bank == 0
+      @screen.clear
+      start
+      round
+      if @dealer.bank.zero?
         puts "Congratulations, #{@player.name}, you`re win!"
         reset_banks
-      elsif @player.bank == 0
+      elsif @player.bank.zero?
         puts "Sorry, #{@dealer.name} is winner!"
         reset_banks
       end
@@ -210,5 +216,4 @@ class Game
       break if answ == 'n'
     end
   end
-
 end

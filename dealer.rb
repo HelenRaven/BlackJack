@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'validation'
 
 class Dealer
@@ -43,5 +45,4 @@ class Dealer
     @cards.clear
     @score = 0
   end
-
 end

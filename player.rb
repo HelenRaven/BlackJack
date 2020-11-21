@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 require_relative 'dealer'
 require_relative 'validation'
 
 class Player < Dealer
-
   include Validation
 
   attr_accessor :move
+
   validate :name, :presence
   validate :bank, :positive
 
-  MOVE = [{key: :G, text: "Get card"}, {key: :S, text: "Skip move"}, {key: :O, text: "Open cards"}]
+  MOVE = [{ key: :G, text: "Get card" }, { key: :S, text: "Skip move" }, { key: :O, text: "Open cards" }].freeze
 
-  def initialize (name, bank)
+  def initialize(name, bank)
     @name = name
     @move = []
     @move += MOVE
@@ -24,5 +26,4 @@ class Player < Dealer
     @move += MOVE
     super
   end
-
 end

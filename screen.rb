@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'validation'
 
 class Screen
@@ -34,7 +36,6 @@ class Screen
   def print_screen(delay = 0)
     sleep delay
     system('clear')
-    @screen.each {|str| puts str}
+    @screen.each { |str| puts str }
   end
-
 end
