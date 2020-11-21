@@ -2,15 +2,17 @@ class Screen
 
   attr_reader :width, :height, :screen
 
-  def initialize(width, height)
+  def initialize(width = 10, height = 10)
     @width = width
     @height = height
     @screen = []
-    clear
+    @height.times { @screen << " " * @width }
   end
 
   def clear
-    height.times { @screen << " " * width }
+   # @screen = [" "]
+    @height.times { |i| @screen[i] = " " * @width }
+    #system('clear')
   end
 
   def add_image(x, y, image)
