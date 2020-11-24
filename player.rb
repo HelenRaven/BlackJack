@@ -11,7 +11,7 @@ class Player < Dealer
   validate :name, :presence
   validate :bank, :positive
 
-  MOVE = [{ key: :G, text: "Get card" }, { key: :S, text: "Skip move" }, { key: :O, text: "Open cards" }].freeze
+  MOVE = %i[get skip open].freeze
 
   def initialize(name, bank)
     @name = name

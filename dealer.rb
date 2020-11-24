@@ -22,8 +22,8 @@ class Dealer
     @score = 0
     aces = 0
     @cards.each do |card|
-      aces += 1 if card[:value] == :T
-      @score += card[:cost]
+      aces += 1 if card.value == 'A'
+      @score += card.cost
     end
     aces.times { @score -= 10 if @score > 21 }
   end
